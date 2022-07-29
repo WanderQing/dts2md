@@ -7,13 +7,13 @@ List all function and function's comment from your `.d.ts`.
 ## install
 
 ```shell
-npm install @wdq/dts2md
+npm install @wanderqing/dts2md
 ```
 
 or
 
 ```shell
-yarn add @wdq/dts2md
+yarn add @wanderqing/dts2md
 ```
 
 ## Build
@@ -36,7 +36,7 @@ dts2md supports function declaration statement, don't supports arrow function st
 
 ```typescript
 // index.ts
-import { generate } from '@wdq/dts2md';
+import { generate } from '@wanderqing/dts2md';
 generate({
   src: './src',
   out: './docs'

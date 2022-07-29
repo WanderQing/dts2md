@@ -1,6 +1,6 @@
 {
-  "name": "@wdq/dts2md",
-  "version": "1.0.0",
+  "name": "@wanderqing/dts2md",
+  "version": "1.0.2",
   "description": "Markdown generator from d.ts, List all exported functions and comments.",
   "main": "dist/generator.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "dist"
   ],
   "publishConfig": {
-    "registry": "https://registry.npmjs.org"
+    "access": "public"
   },
   "repository": {
     "type": "git",
