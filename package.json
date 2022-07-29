@@ -1,0 +1,39 @@
+{
+  "name": "@wdq/dts2md",
+  "version": "1.0.0",
+  "description": "Markdown generator from d.ts, List all exported functions and comments.",
+  "main": "dist/generator.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WanderQing/dts2md.git"
+  },
+  "keywords": [
+    "markdown",
+    "markdown-generator",
+    "dts2md",
+    "typescript",
+    "d.ts"
+  ],
+  "author": "WanderQing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/WanderQing/dts2md/issues"
+  },
+  "homepage": "https://github.com/WanderQing/dts2md#readme",
+  "devDependencies": {
+    "@types/node": "^18.6.2",
+    "@types/typescript": "^2.0.0",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
