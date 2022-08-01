@@ -1,10 +1,11 @@
 {
   "name": "@wanderqing/dts2md",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Markdown generator from d.ts, List all exported functions and comments.",
   "main": "dist/generator.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "tsc -d __test__/test.ts && ts-node index.ts"
   },
   "files": [
     "dist"

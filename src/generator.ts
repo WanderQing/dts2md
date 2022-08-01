@@ -2,6 +2,7 @@ import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
 import { addCode, addTitle } from './markdown';
+import { getJsDoc, isArrowFunction } from './utils';
 
 export interface Options {
   out: string;
@@ -19,13 +20,8 @@ export function generate(options: Options): void {
       const ast = ts.createSourceFile(fileName, code, ts.ScriptTarget.Latest);
       let content = '';
       ast.forEachChild((node) => {
-        if (ts.isFunctionDeclaration(node)) {
-          let comment: string;
-          if (Array.isArray(node['jsDoc']) && node['jsDoc'].length > 0) {
-            comment = node['jsDoc'][0]['comment'];
-          } else {
-            comment = node.name.escapedText.toString();
-          }
+        if (ts.isFunctionDeclaration(node) || isArrowFunction(node, code)) {
+          let comment = getJsDoc(node);
           content = content + addTitle(comment);
           const statement = code.slice(node.modifiers.pos, node.end);
           content = content + addCode(statement.trim());

@@ -16,21 +16,10 @@ or
 yarn add @wanderqing/dts2md
 ```
 
-## Build
-
-```shell
-npm run build
-```
-
-or
-
-```shell
-yarn run build
-```
-
 ## Usage
 
-dts2md supports function declaration statement, don't supports arrow function statement, for example `const add = (a: number, b :number) => number`
+1. support JSDoc comment
+2. support function declaration and arrow function
 
 ### Example
 
