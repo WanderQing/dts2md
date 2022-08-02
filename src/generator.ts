@@ -27,14 +27,16 @@ export function generate(options: Options): void {
           content = content + addCode(statement.trim());
         }
       });
-      const fullName = path.resolve(out, markdownName) + '.md';
-      if (!fs.existsSync(out)) {
-        fs.mkdirSync(out);
+      if (content.trim().length > 0) {
+        const fullName = path.resolve(out, markdownName) + '.md';
+        if (!fs.existsSync(out)) {
+          fs.mkdirSync(out);
+        }
+        if (fs.existsSync(fullName)) {
+          fs.unlinkSync(fullName);
+        }
+        fs.writeFileSync(fullName, content);
       }
-      if (fs.existsSync(fullName)) {
-        fs.unlinkSync(fullName);
-      }
-      fs.writeFileSync(fullName, content);
     }
   });
   return;
