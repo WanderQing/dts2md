@@ -9,7 +9,7 @@ export function isArrowFunction(node, sourceCode: string): boolean {
 export function getJsDoc(node: ts.Node): string {
   let comment: string;
   if (hasJsDoc(node)) {
-    comment = node['jsDoc'][0]['comment'];
+    comment = parserJsDoc(node);
   } else {
     if (ts.isFunctionDeclaration(node)) {
       comment = node.name.escapedText.toString();
@@ -25,6 +25,14 @@ export function getJsDoc(node: ts.Node): string {
     }
   }
   return comment;
+}
+interface JsDoc {
+  comment: string;
+}
+function parserJsDoc(node: ts.Node): string {
+  const jsDocs: Array<JsDoc> = node['jsDoc'] as Array<JsDoc>;
+  const lastJsDoc = jsDocs[jsDocs.length - 1];
+  return lastJsDoc.comment.trim().split('\n')[0];
 }
 export function hasJsDoc(node: ts.Node): boolean {
   return Array.isArray(node['jsDoc']) && node['jsDoc'].length > 0;
