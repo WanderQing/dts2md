@@ -1,4 +1,5 @@
 import ts from 'typescript';
+import { addCode, addTitle } from './markdown';
 
 export function isArrowFunction(node, sourceCode: string): boolean {
   return (
@@ -36,4 +37,14 @@ function parserJsDoc(node: ts.Node): string {
 }
 export function hasJsDoc(node: ts.Node): boolean {
   return Array.isArray(node['jsDoc']) && node['jsDoc'].length > 0;
+}
+export function getContent(node: ts.Node, code: string): string {
+  let result: string = '';
+  if (ts.isFunctionDeclaration(node) || isArrowFunction(node, code)) {
+    let comment = getJsDoc(node);
+    result = result + addTitle(comment);
+    const statement = code.slice(node.modifiers.pos, node.end);
+    result = result + addCode(statement.trim());
+  }
+  return result;
 }

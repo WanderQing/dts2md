@@ -1,16 +1,17 @@
 import * as ts from 'typescript';
 import * as fs from 'fs';
 import * as path from 'path';
-import { addCode, addTitle } from './markdown';
-import { getJsDoc, isArrowFunction } from './utils';
+import { addTitle } from './markdown';
+import { getContent } from './utils';
 
 export interface Options {
   out: string;
   src: string;
+  titleMap?: Record<string, string>;
 }
 
 export function generate(options: Options): void {
-  const { out, src } = options;
+  const { out, src, titleMap } = options;
   fs.readdirSync(src).forEach((item) => {
     if (/.d.ts$/.test(item)) {
       let fileName = path.resolve(src, item);
@@ -18,26 +19,37 @@ export function generate(options: Options): void {
       const buffer = fs.readFileSync(fileName);
       const code = buffer.toString();
       const ast = ts.createSourceFile(fileName, code, ts.ScriptTarget.Latest);
-      let content = '';
+      let fileBody: string = '';
       ast.forEachChild((node) => {
-        if (ts.isFunctionDeclaration(node) || isArrowFunction(node, code)) {
-          let comment = getJsDoc(node);
-          content = content + addTitle(comment);
-          const statement = code.slice(node.modifiers.pos, node.end);
-          content = content + addCode(statement.trim());
-        }
+        fileBody = fileBody + getContent(node, code);
       });
-      if (content.trim().length > 0) {
-        const fullName = path.resolve(out, markdownName) + '.md';
-        if (!fs.existsSync(out)) {
-          fs.mkdirSync(out);
+      let content: string = '';
+      if (isNotEmptyContent(fileBody)) {
+        if (titleMap && Object.keys(titleMap)) {
+          let title = titleMap[markdownName]
+            ? titleMap[markdownName]
+            : markdownName;
+          content = content + addTitle(title, 1);
         }
-        if (fs.existsSync(fullName)) {
-          fs.unlinkSync(fullName);
-        }
-        fs.writeFileSync(fullName, content);
+        content = content + fileBody;
       }
+      writeMarkdown(content, out, markdownName);
     }
   });
-  return;
+}
+
+function writeMarkdown(content: string, out: string, markdownName): void {
+  if (isNotEmptyContent(content)) {
+    const fullName = path.resolve(out, markdownName) + '.md';
+    if (!fs.existsSync(out)) {
+      fs.mkdirSync(out);
+    }
+    if (fs.existsSync(fullName)) {
+      fs.unlinkSync(fullName);
+    }
+    fs.writeFileSync(fullName, content);
+  }
+}
+function isNotEmptyContent(content: string): boolean {
+  return content.trim().length > 0;
 }
